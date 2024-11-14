@@ -40,8 +40,8 @@ This shortcode will:
 Example placement:
 - Add to any page or post using the WordPress editor
 - Add to your theme template using:
-```html
-  `<?php echo do_shortcode('[user_coupons]'); ?>`
+```
+  <?php echo do_shortcode('[user_coupons]'); ?>
 ```
 
 ### File Structure
