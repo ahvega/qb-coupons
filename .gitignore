@@ -1,0 +1,60 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE/Editor Folders
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Node/NPM (if using build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Build/Dist Files
+dist/
+build/
+*.zip
+
+# Composer (if using PHP dependencies)
+vendor/
+composer.lock
+
+# WordPress specific
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/cache/
+wp-content/backups/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Log files
+*.log
+error_log
+debug.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Test configuration files
+phpunit.xml
+phpcs.xml
+
+# Documentation
+docs/
+
+# Translation backup files
+*.po~
+*.mo~ 

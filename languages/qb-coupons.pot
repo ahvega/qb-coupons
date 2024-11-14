@@ -1,0 +1,56 @@
+# Copyright (C) 2024 QB Coupons
+# This file is distributed under the same license as the QB Coupons package.
+msgid ""
+msgstr ""
+"Project-Id-Version: QB Coupons 1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qb-coupons\n"
+"POT-Creation-Date: 2024-01-01T00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: qb-coupons\n"
+
+#. Plugin Name of the plugin
+msgid "QB Coupons"
+msgstr ""
+
+#. Description of the plugin
+msgid "Manages the generation and usage of coupons for annual subscriptions."
+msgstr ""
+
+#. Author of the plugin
+msgid "Tu Adalberto H. Vega"
+msgstr ""
+
+#: qb-coupons.php:125
+msgid "Please login to view your coupons."
+msgstr ""
+
+#: qb-coupons.php:134
+msgid "You don't have any available coupons."
+msgstr ""
+
+#: qb-coupons.php:138
+msgid "Your Available Coupons"
+msgstr ""
+
+#: qb-coupons.php:139
+msgid "Click on the coupon code to copy it. You can then paste it in the coupon field during checkout."
+msgstr ""
+
+#: qb-coupons.php:154
+msgid "Copy"
+msgstr ""
+
+#: qb-coupons.php:155
+msgid "Copied!"
+msgstr ""
+
+#: qb-coupons.php:162
+msgid "Note: Coupons are valid only for products in the \"Ecological Theme\" category."
+msgstr ""
+  
