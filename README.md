@@ -27,8 +27,9 @@ QB Coupons integrates with WooCommerce to provide automatic coupon generation an
 ### Shortcode
 
 Use the following shortcode to display available coupons to logged-in users:
-
+```
 [user_coupons]
+```
 
 This shortcode will:
 - Display all unused coupons for the logged-in user
@@ -38,10 +39,14 @@ This shortcode will:
 
 Example placement:
 - Add to any page or post using the WordPress editor
-- Add to your theme template using: `<?php echo do_shortcode('[user_coupons]'); ?>`
+- Add to your theme template using:
+```
+  <?php echo do_shortcode('[user_coupons]'); ?>
+```
 
 ### File Structure
 
+```
 qb-coupons/
 ├── languages/
 │   ├── qb-coupons.pot
@@ -50,6 +55,7 @@ qb-coupons/
 ├── .gitignore
 ├── README.md
 └── qb-coupons.php
+```
 
 ### Translations
 
