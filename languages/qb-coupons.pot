@@ -53,4 +53,68 @@ msgstr ""
 #: qb-coupons.php:162
 msgid "Note: Coupons are valid only for products in the \"Ecological Theme\" category."
 msgstr ""
+
+#: qb-coupons.php:43
+msgid "Settings"
+msgstr ""
+
+#: qb-coupons.php:55
+msgid "QB Coupons Settings"
+msgstr ""
+
+#: qb-coupons.php:56
+msgid "QB Coupons"
+msgstr ""
+
+#: qb-coupons.php:71
+msgid "Coupon Generation Settings"
+msgstr ""
+
+#: qb-coupons.php:179
+msgid "Configure the settings for automatic coupon generation."
+msgstr ""
+
+#: qb-coupons.php:81
+msgid "Discount Type"
+msgstr ""
+
+#: qb-coupons.php:87
+msgid "Fixed cart discount"
+msgstr ""
+
+#: qb-coupons.php:88
+msgid "Percentage discount"
+msgstr ""
+
+#: qb-coupons.php:89
+msgid "Fixed product discount"
+msgstr ""
+
+#: qb-coupons.php:98
+msgid "Discount Amount"
+msgstr ""
+
+#: qb-coupons.php:112
+msgid "Number of Coupons"
+msgstr ""
+
+#: qb-coupons.php:126
+msgid "Subscription Product"
+msgstr ""
+
+#: qb-coupons.php:136
+msgid "Individual Use Only"
+msgstr ""
+
+#: qb-coupons.php:146
+msgid "Product Categories"
+msgstr ""
+
+#: qb-coupons.php:235
+msgid "Select a subscription product"
+msgstr ""
+
+#: qb-coupons.php:165
+msgid "Save Settings"
+msgstr ""
   

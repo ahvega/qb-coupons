@@ -9,7 +9,6 @@
  * Domain Path: /languages
  */
 
-
 if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
@@ -27,8 +26,271 @@ class QB_Coupons {
 		add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
 		add_action('woocommerce_order_status_completed', array($this, 'handle_annual_subscription_purchase'));
 		add_shortcode('user_coupons', array($this, 'display_user_coupons_shortcode'));
+		
+		// Add admin menu and settings
+		add_action('admin_menu', array($this, 'add_admin_menu'));
+		add_action('admin_init', array($this, 'register_settings'));
+		add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'add_settings_link'));
 
 		error_log('QB Coupons plugin initialized');
+	}
+
+	/**
+	 * Add settings link to plugin listing
+	 */
+	public function add_settings_link($links) {
+		$settings_link = '<a href="' . admin_url('admin.php?page=qb-coupons-settings') . '">' . __('Settings', 'qb-coupons') . '</a>';
+		array_unshift($links, $settings_link);
+		return $links;
+	}
+
+	/**
+	 * Add admin menu page
+	 */
+	public function add_admin_menu() {
+		add_menu_page(
+			__('QB Coupons Settings', 'qb-coupons'),
+			__('QB Coupons', 'qb-coupons'),
+			'manage_options',
+			'qb-coupons-settings',
+			array($this, 'display_admin_page'),
+			'dashicons-tickets',
+			55
+		);
+	}
+
+	/**
+	 * Register plugin settings
+	 */
+	public function register_settings() {
+		register_setting('qb_coupons_settings', 'qb_coupons_options', array($this, 'sanitize_settings'));
+
+		add_settings_section(
+			'qb_coupons_main_section',
+			__('Coupon Generation Settings', 'qb-coupons'),
+			array($this, 'section_callback'),
+			'qb-coupons-settings'
+		);
+
+		// Discount Type
+		add_settings_field(
+			'discount_type',
+			__('Discount Type', 'qb-coupons'),
+			array($this, 'dropdown_callback'),
+			'qb-coupons-settings',
+			'qb_coupons_main_section',
+			array(
+				'id' => 'discount_type',
+				'options' => array(
+					'fixed_cart' => __('Fixed cart discount', 'qb-coupons'),
+					'percent' => __('Percentage discount', 'qb-coupons'),
+					'fixed_product' => __('Fixed product discount', 'qb-coupons')
+				)
+			)
+		);
+
+		// Discount Amount
+		add_settings_field(
+			'discount_amount',
+			__('Discount Amount', 'qb-coupons'),
+			array($this, 'number_callback'),
+			'qb-coupons-settings',
+			'qb_coupons_main_section',
+			array(
+				'id' => 'discount_amount',
+				'step' => '0.01',
+				'min' => '0'
+			)
+		);
+
+		// Number of Coupons
+		add_settings_field(
+			'coupon_quantity',
+			__('Number of Coupons', 'qb-coupons'),
+			array($this, 'number_callback'),
+			'qb-coupons-settings',
+			'qb_coupons_main_section',
+			array(
+				'id' => 'coupon_quantity',
+				'step' => '1',
+				'min' => '1'
+			)
+		);
+
+		// Subscription Product
+		add_settings_field(
+			'subscription_product',
+			__('Subscription Product', 'qb-coupons'),
+			array($this, 'subscription_products_callback'),
+			'qb-coupons-settings',
+			'qb_coupons_main_section'
+		);
+
+		// Individual Use
+		add_settings_field(
+			'individual_use',
+			__('Individual Use Only', 'qb-coupons'),
+			array($this, 'checkbox_callback'),
+			'qb-coupons-settings',
+			'qb_coupons_main_section',
+			array('id' => 'individual_use')
+		);
+
+		// Product Categories
+		add_settings_field(
+			'product_categories',
+			__('Product Categories', 'qb-coupons'),
+			array($this, 'categories_callback'),
+			'qb-coupons-settings',
+			'qb_coupons_main_section'
+		);
+	}
+
+	/**
+	 * Display the admin settings page
+	 */
+	public function display_admin_page() {
+		if (!current_user_can('manage_options')) {
+			return;
+		}
+		?>
+		<div class="wrap">
+			<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+			<form action="options.php" method="post">
+				<?php
+				settings_fields('qb_coupons_settings');
+				do_settings_sections('qb-coupons-settings');
+				submit_button(__('Save Settings', 'qb-coupons'));
+				?>
+			</form>
+		</div>
+		<?php
+	}
+
+	// Field Callbacks
+	public function section_callback($args) {
+		?>
+		<p><?php _e('Configure the settings for automatic coupon generation.', 'qb-coupons'); ?></p>
+		<?php
+	}
+
+	public function dropdown_callback($args) {
+		$options = get_option('qb_coupons_options');
+		$value = isset($options[$args['id']]) ? $options[$args['id']] : '';
+		?>
+		<select name="qb_coupons_options[<?php echo esc_attr($args['id']); ?>]">
+			<?php foreach ($args['options'] as $key => $label) : ?>
+				<option value="<?php echo esc_attr($key); ?>" <?php selected($value, $key); ?>>
+					<?php echo esc_html($label); ?>
+				</option>
+			<?php endforeach; ?>
+		</select>
+		<?php
+	}
+
+	public function number_callback($args) {
+		$options = get_option('qb_coupons_options');
+		$value = isset($options[$args['id']]) ? $options[$args['id']] : '';
+		?>
+		<input type="number" 
+			   name="qb_coupons_options[<?php echo esc_attr($args['id']); ?>]"
+			   value="<?php echo esc_attr($value); ?>"
+			   step="<?php echo esc_attr($args['step']); ?>"
+			   min="<?php echo esc_attr($args['min']); ?>">
+		<?php
+	}
+
+	public function checkbox_callback($args) {
+		$options = get_option('qb_coupons_options');
+		$checked = isset($options[$args['id']]) ? $options[$args['id']] : 0;
+		?>
+		<input type="checkbox" 
+			   name="qb_coupons_options[<?php echo esc_attr($args['id']); ?>]"
+			   value="1" 
+			   <?php checked(1, $checked); ?>>
+		<?php
+	}
+
+	public function subscription_products_callback() {
+		$options = get_option('qb_coupons_options');
+		$selected = isset($options['subscription_product']) ? $options['subscription_product'] : '';
+		
+		$args = array(
+			'post_type' => 'product',
+			'posts_per_page' => -1,
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'product_type',
+					'field' => 'slug',
+					'terms' => 'subscription'
+				)
+			)
+		);
+		
+		$subscription_products = get_posts($args);
+		?>
+		<select name="qb_coupons_options[subscription_product]">
+			<option value=""><?php _e('Select a subscription product', 'qb-coupons'); ?></option>
+			<?php foreach ($subscription_products as $product) : ?>
+				<option value="<?php echo esc_attr($product->ID); ?>" <?php selected($selected, $product->ID); ?>>
+					<?php echo esc_html($product->post_title); ?>
+				</option>
+			<?php endforeach; ?>
+		</select>
+		<?php
+	}
+
+	public function categories_callback() {
+		$options = get_option('qb_coupons_options');
+		$selected_cats = isset($options['product_categories']) ? $options['product_categories'] : array();
+		
+		$categories = get_terms(array(
+			'taxonomy' => 'product_cat',
+			'hide_empty' => false,
+		));
+		
+		foreach ($categories as $category) {
+			?>
+			<label>
+				<input type="checkbox" 
+					   name="qb_coupons_options[product_categories][]" 
+					   value="<?php echo esc_attr($category->term_id); ?>"
+					   <?php checked(in_array($category->term_id, $selected_cats)); ?>>
+				<?php echo esc_html($category->name); ?>
+			</label><br>
+			<?php
+		}
+	}
+
+	/**
+	 * Sanitize settings before saving
+	 */
+	public function sanitize_settings($input) {
+		$sanitized = array();
+		
+		if (isset($input['discount_type'])) {
+			$sanitized['discount_type'] = sanitize_text_field($input['discount_type']);
+		}
+		
+		if (isset($input['discount_amount'])) {
+			$sanitized['discount_amount'] = floatval($input['discount_amount']);
+		}
+		
+		if (isset($input['coupon_quantity'])) {
+			$sanitized['coupon_quantity'] = intval($input['coupon_quantity']);
+		}
+		
+		if (isset($input['subscription_product'])) {
+			$sanitized['subscription_product'] = intval($input['subscription_product']);
+		}
+		
+		$sanitized['individual_use'] = isset($input['individual_use']) ? 1 : 0;
+		
+		if (isset($input['product_categories']) && is_array($input['product_categories'])) {
+			$sanitized['product_categories'] = array_map('intval', $input['product_categories']);
+		}
+		
+		return $sanitized;
 	}
 
 	/**
@@ -46,9 +308,13 @@ class QB_Coupons {
 	 * @return array Array of generated coupon codes.
 	 */
 	public function generate_annual_subscription_coupons($user_id) {
+		$options = get_option('qb_coupons_options');
+		$quantity = isset($options['coupon_quantity']) ? $options['coupon_quantity'] : 12;
+		
 		error_log("Generating coupons for user ID: $user_id");
 		$coupons = array();
-		for ($i = 0; $i < 12; $i++) {
+		
+		for ($i = 0; $i < $quantity; $i++) {
 			$coupon_code = 'ANNUAL_' . $user_id . '_' . uniqid();
 			$coupon = array(
 				'post_title' => $coupon_code,
@@ -61,23 +327,20 @@ class QB_Coupons {
 			$new_coupon_id = wp_insert_post($coupon);
 			error_log("Created coupon with ID: $new_coupon_id");
 
-			update_post_meta($new_coupon_id, 'discount_type', 'fixed_cart');
-			update_post_meta($new_coupon_id, 'coupon_amount', '4.99');
-			update_post_meta($new_coupon_id, 'individual_use', 'yes');
+			// Apply settings
+			update_post_meta($new_coupon_id, 'discount_type', $options['discount_type'] ?? 'fixed_cart');
+			update_post_meta($new_coupon_id, 'coupon_amount', $options['discount_amount'] ?? '4.99');
+			update_post_meta($new_coupon_id, 'individual_use', $options['individual_use'] ?? 'yes');
 			update_post_meta($new_coupon_id, 'usage_limit', '1');
 			update_post_meta($new_coupon_id, 'customer_email', array(get_userdata($user_id)->user_email));
 
-			// Limitar el cupón a la categoría "Tema Ecológico"
-			$category = get_term_by('name', 'Tema Ecológico', 'product_cat');
-			if ($category) {
-				update_post_meta($new_coupon_id, 'product_categories', array($category->term_id));
-				error_log("Applied category restriction to coupon");
-			} else {
-				error_log("Warning: 'Tema Ecológico' category not found");
+			if (!empty($options['product_categories'])) {
+				update_post_meta($new_coupon_id, 'product_categories', $options['product_categories']);
 			}
 
 			$coupons[] = $coupon_code;
 		}
+		
 		error_log("Generated coupons: " . print_r($coupons, true));
 		return $coupons;
 	}

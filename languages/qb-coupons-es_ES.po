@@ -54,4 +54,68 @@ msgstr "¡Copiado!"
 
 #: qb-coupons.php:162
 msgid "Note: Coupons are valid only for products in the \"Ecological Theme\" category."
-msgstr "Nota: Los cupones son válidos solo para productos de la categoría \"Tema Ecológico\"." 
+msgstr "Nota: Los cupones son válidos solo para productos de la categoría \"Tema Ecológico\"."
+
+#: qb-coupons.php:43
+msgid "Settings"
+msgstr "Ajustes"
+
+#: qb-coupons.php:55
+msgid "QB Coupons Settings"
+msgstr "Ajustes de QB Cupones"
+
+#: qb-coupons.php:56
+msgid "QB Coupons"
+msgstr "QB Cupones"
+
+#: qb-coupons.php:71
+msgid "Coupon Generation Settings"
+msgstr "Ajustes de Generación de Cupones"
+
+#: qb-coupons.php:179
+msgid "Configure the settings for automatic coupon generation."
+msgstr "Configura los ajustes para la generación automática de cupones."
+
+#: qb-coupons.php:81
+msgid "Discount Type"
+msgstr "Tipo de Descuento"
+
+#: qb-coupons.php:87
+msgid "Fixed cart discount"
+msgstr "Descuento fijo en carrito"
+
+#: qb-coupons.php:88
+msgid "Percentage discount"
+msgstr "Descuento porcentual"
+
+#: qb-coupons.php:89
+msgid "Fixed product discount"
+msgstr "Descuento fijo en producto"
+
+#: qb-coupons.php:98
+msgid "Discount Amount"
+msgstr "Monto del Descuento"
+
+#: qb-coupons.php:112
+msgid "Number of Coupons"
+msgstr "Número de Cupones"
+
+#: qb-coupons.php:126
+msgid "Subscription Product"
+msgstr "Producto de Suscripción"
+
+#: qb-coupons.php:136
+msgid "Individual Use Only"
+msgstr "Solo Uso Individual"
+
+#: qb-coupons.php:146
+msgid "Product Categories"
+msgstr "Categorías de Productos"
+
+#: qb-coupons.php:235
+msgid "Select a subscription product"
+msgstr "Selecciona un producto de suscripción"
+
+#: qb-coupons.php:165
+msgid "Save Settings"
+msgstr "Guardar Ajustes" 
